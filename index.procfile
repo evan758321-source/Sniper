@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BeatSniper — Snipe Your Friends on BeatLeader</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<!-- Ambient background -->
+<div class="bg-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+</div>
+<div class="noise-overlay"></div>
+
+<!-- NAV -->
+<nav class="glass-nav">
+  <div class="nav-brand">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <path d="M14 2L26 8V20L14 26L2 20V8L14 2Z" stroke="url(#saberGrad)" stroke-width="1.5" fill="none"/>
+      <path d="M14 6L22 10V18L14 22L6 18V10L14 6Z" fill="url(#saberGrad)" opacity="0.3"/>
+      <path d="M10 14L13 17L18 11" stroke="url(#saberGrad)" stroke-width="2" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="saberGrad" x1="2" y1="2" x2="26" y2="26">
+          <stop offset="0%" stop-color="#00f5ff"/>
+          <stop offset="100%" stop-color="#bf5fff"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <span>BEAT<strong>SNIPER</strong></span>
+  </div>
+  <div class="nav-actions" id="nav-actions">
+    <!-- Filled by JS -->
+  </div>
+</nav>
+
+<!-- MAIN APP -->
+<main class="app-shell">
+
+  <!-- LOGIN SCREEN -->
+  <section class="login-screen" id="login-screen">
+    <div class="login-hero">
+      <div class="hero-badge">BEAT LEADER COMPANION</div>
+      <h1 class="hero-title">
+        Snipe.<br>
+        <span class="accent">Dominate.</span><br>
+        Repeat.
+      </h1>
+      <p class="hero-sub">Connect your BeatLeader account to see exactly which of your friends you can overtake — and by how much.</p>
+      <a href="/login" class="btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+        Connect BeatLeader
+      </a>
+      <p class="login-note">No data stored. Session only.</p>
+    </div>
+    <div class="login-visual">
+      <div class="glass-card preview-card">
+        <div class="preview-header">
+          <div class="avatar-ring"></div>
+          <div>
+            <div class="skeleton-line w-24"></div>
+            <div class="skeleton-line w-16 mt-1" style="opacity:0.5"></div>
+          </div>
+          <div class="rank-badge">#1,337</div>
+        </div>
+        <div class="preview-stats">
+          <div class="stat-chip"><span>PP</span><strong>12,450</strong></div>
+          <div class="stat-chip"><span>ACC</span><strong>94.2%</strong></div>
+          <div class="stat-chip snipe-chip"><span>SNIPEABLE</span><strong>7</strong></div>
+        </div>
+        <div class="preview-targets">
+          <div class="target-row">
+            <div class="target-cover" style="background:linear-gradient(135deg,#ff6b6b,#ee5a24)"></div>
+            <div class="target-info">
+              <div class="skeleton-line w-32"></div>
+              <div class="target-gap">GAP <span class="gap-val negative">−1.3%</span></div>
+            </div>
+            <div class="snipe-indicator">🎯</div>
+          </div>
+          <div class="target-row">
+            <div class="target-cover" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)"></div>
+            <div class="target-info">
+              <div class="skeleton-line w-28"></div>
+              <div class="target-gap">GAP <span class="gap-val negative">−0.7%</span></div>
+            </div>
+            <div class="snipe-indicator">🎯</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD (logged in) -->
+  <section class="dashboard" id="dashboard" style="display:none">
+
+    <!-- Profile strip -->
+    <div class="profile-strip glass-card" id="profile-strip">
+      <div class="profile-avatar-wrap">
+        <img id="my-avatar" src="" alt="" class="profile-avatar">
+        <div class="avatar-glow"></div>
+      </div>
+      <div class="profile-info">
+        <div class="profile-name" id="my-name">—</div>
+        <div class="profile-country" id="my-country">—</div>
+      </div>
+      <div class="profile-stats" id="profile-stats">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- Tab bar -->
+    <div class="tab-bar">
+      <button class="tab active" data-tab="friends">Friends & Snipe</button>
+      <button class="tab" data-tab="my-scores">My Scores</button>
+    </div>
+
+    <!-- FRIENDS TAB -->
+    <div class="tab-content active" id="tab-friends">
+      <div class="friends-grid" id="friends-grid">
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <span>Loading friends…</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MY SCORES TAB -->
+    <div class="tab-content" id="tab-my-scores">
+      <div class="scores-controls">
+        <select class="glass-select" id="my-sort">
+          <option value="date">Recent</option>
+          <option value="pp">Top PP</option>
+          <option value="acc">Best Accuracy</option>
+        </select>
+      </div>
+      <div class="scores-grid" id="my-scores-grid">
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <span>Loading scores…</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- SNIPE PANEL (slide-in overlay) -->
+  <div class="snipe-panel" id="snipe-panel">
+    <div class="snipe-panel-inner glass-panel">
+      <button class="snipe-close" id="snipe-close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="snipe-header" id="snipe-header"></div>
+      <div class="snipe-filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="unplayed">Unplayed</button>
+        <button class="filter-btn" data-filter="close">Close Gap (&lt;2%)</button>
+      </div>
+      <div class="snipe-list" id="snipe-list">
+        <div class="loading-state"><div class="spinner"></div><span>Calculating targets…</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-backdrop" id="panel-backdrop"></div>
+
+</main>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
